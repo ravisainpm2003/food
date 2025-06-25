@@ -12,7 +12,7 @@ const Home = () => {
     <>
       <div className="osahan-home-page">
         <div className="restaurant-hero">
-          <h2 className="restaurant-title">The restaurants serves</h2>
+          <h2 className="restaurant-title">The restaurant</h2>
         </div>
         {/* Filters */}
         <div className="container mt-2">
