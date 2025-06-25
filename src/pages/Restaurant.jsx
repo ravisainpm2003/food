@@ -252,7 +252,7 @@ const Restaurant = () => {
                         {items.map((item) => (
                           <div
                             key={item.id}
-                            className="d-flex gap-2 p-3 border-bottom gold-members"
+                            className="d-flex gap-2 p-3 border-bottom gold-members align-items-center justify-content-between"
                           >
                             <div
                               className={`fw-bold ${
@@ -267,7 +267,6 @@ const Restaurant = () => {
                               <h6 className="mb-1">{item.name}</h6>
                               <p className="text-muted mb-0">₹{item.price}</p>
                             </div>
-
                             <span className="ms-auto">
                               <button
                                 className="btn btn-outline-secondary btn-sm"

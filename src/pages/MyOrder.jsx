@@ -363,7 +363,7 @@ const OrderList = ({
                     Total Payment
                   </Typography>
                   <Typography variant="body1" fontWeight="bold">
-                    ${order.total_amount.toFixed(2)}
+                    ₹{order.total_amount.toFixed(2)}
                   </Typography>
                 </Box>
                 <Box
