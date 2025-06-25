@@ -74,6 +74,7 @@ const FoodItem = ({item,carts,reload}) => {
                 <img
                   alt="#"
                   src={item.image}
+                  style={{ height: '200px', objectFit: 'cover' }}
                   className="img-fluid item-img w-100"
                 />
               </Link>

@@ -295,7 +295,7 @@ const Checkout = () => {
       const data = new FormData();
       data.append("restaurant_id", restaurant.id || 1);
       data.append("user_name", userDetails.name);
-      data.append("user_email", userDetails.email);
+      data.append("user_phone", userDetails.email);
       data.append("user_address", userDetails.address);
       data.append("total_amount", totalAmount);
       data.append("user_token", user.session);
@@ -487,8 +487,8 @@ const Checkout = () => {
                 required
               />
               <TextField
-                label="Email"
-                type="email"
+                label="Phone Number"
+                type="number"
                 fullWidth
                 margin="normal"
                 value={userDetails.email}
