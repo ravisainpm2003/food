@@ -222,10 +222,7 @@ const Restaurant = () => {
                   <p className="text-gray mb-3">{item.type}</p>
                   <p className="text-gray m-0">₹{item.price}</p>
 
-                  <img
-                    src="https://i.pinimg.com/736x/b5/e8/85/b5e885eebeb896bd54eb5388962ce557.jpg"
-                    alt=""
-                  />
+                 
                   <button
                     className="btn btn-outline-secondary btn-sm"
                     onClick={() => addToCart(item)}
