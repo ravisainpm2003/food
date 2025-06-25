@@ -215,6 +215,11 @@ const Restaurant = () => {
                   <h6 className="mb-1">{item.name}</h6>
                   <p className="text-gray mb-3">{item.type}</p>
                   <p className="text-gray m-0">₹{item.price}</p>
+
+                  <img
+                    src="https://i.pinimg.com/736x/b5/e8/85/b5e885eebeb896bd54eb5388962ce557.jpg"
+                    alt=""
+                  />
                   <button
                     className="btn btn-outline-secondary btn-sm"
                     onClick={() => addToCart(item)}
@@ -262,6 +267,7 @@ const Restaurant = () => {
                               <h6 className="mb-1">{item.name}</h6>
                               <p className="text-muted mb-0">₹{item.price}</p>
                             </div>
+
                             <span className="ms-auto">
                               <button
                                 className="btn btn-outline-secondary btn-sm"
@@ -507,10 +513,7 @@ const Restaurant = () => {
                   onClick={() =>
                     navigate("/checkout", { state: { cart, restaurant } })
                   }
-                  disabled={
-                  
-                    cart.length === 0
-                  }
+                  disabled={cart.length === 0}
                 >
                   PAY ₹
                   {(
