@@ -63,9 +63,15 @@ const Restaurant = () => {
       console.log("Get Cart Error " + err);
     }
   };
+  const [error, setError] = useState(null);
 
   const submitReview = async (e) => {
-    e.preventDefault();
+       e.preventDefault();
+    if(newReview.rating === 0 ) {
+     setError("Please select a rating before submitting your review.");
+      return;
+    }
+ 
     try {
       const data = new FormData();
       data.append("restaurant_id", params.id);
@@ -325,6 +331,7 @@ const Restaurant = () => {
                   <p className="m-0 small">Rate the Place</p>
                   <Rating
                     className="ms-auto"
+                    required
                     value={newReview.rating}
                     onChange={(e, newValue) =>
                       setNewReview({ ...newReview, rating: newValue })
@@ -336,6 +343,7 @@ const Restaurant = () => {
                   <input
                     type="text"
                     className="form-control"
+                 
                     value={newReview.user_name}
                     onChange={(e) =>
                       setNewReview({ ...newReview, user_name: e.target.value })
@@ -354,6 +362,11 @@ const Restaurant = () => {
                     required
                   />
                 </div>
+                {error && (
+                  <div className="alert alert-warning" role="alert">
+                    {error}
+                  </div>
+                )}
                 <button type="submit" className="btn btn-primary w-100">
                   Submit Comment
                 </button>
