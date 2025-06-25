@@ -1,0 +1,97 @@
+.otp-input {
+  width: 45px !important;
+  height: 45px !important;
+  margin: 0 8px;
+  /* Increase margin for better spacing */
+  font-size: 24px;
+  /* Increase font size for better readability */
+  text-align: center;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  /* More rounded for a modern feel */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* Subtle shadow for depth */
+  transition: all 0.3s ease;
+  /* Smooth transition for hover/focus */
+}
+
+.otp-input:focus {
+  outline: none;
+  border-color: #007bff;
+  /* Highlighted border on focus */
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  /* Add shadow on focus */
+}
+
+.otp-input:hover {
+  border-color: #007bff;
+  /* Change border color on hover */
+  cursor: pointer;
+  /* 
+  Show pointer cursor on hover */
+}
+.over-flow {
+  display: flex;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+ 
+}
+.over-flow > * {
+  min-width: 150px; /* Adjust as needed */
+}
+/* For Chrome, Edge, and Safari */
+.over-flow::-webkit-scrollbar {
+  height: 6px; /* Reduce scrollbar height */
+}
+
+.over-flow::-webkit-scrollbar-thumb {
+  background: #ccc; /* Optional: scrollbar color */
+  border-radius: 4px;
+}
+
+/* For Firefox */
+.over-flow {
+  scrollbar-width: thin;      /* Makes scrollbar thinner */
+  scrollbar-color: #ccc #fff; /* Thumb and track color */
+}
+.restaurant-hero {
+background: linear-gradient(90deg, #f9f6af 0%, #f4460c 100%);
+  padding: 2rem 1rem;
+
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+
+  max-width: 100%;
+  text-align: center;
+  animation: fadeInDown 1s ease;
+}
+
+.restaurant-title {
+  color: #fff;
+font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 1px;
+  margin: 0;
+  animation: fadeIn 1.2s ease;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
