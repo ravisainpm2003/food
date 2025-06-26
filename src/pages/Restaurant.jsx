@@ -6,6 +6,7 @@ import ENDPOINT from "../components/utilities/ENDPOINT";
 import SecurityHeaders from "../components/utilities/SecurityHeaders";
 import { UserContext } from "../components/utilities/UserContext";
 import Resturantskel from "../components/skelton/Resturantskel";
+import { Avatar } from "@mui/material";
 
 const Restaurant = () => {
   const [restaurant, setRestaurant] = useState(null);
@@ -75,9 +76,10 @@ const Restaurant = () => {
     try {
       const data = new FormData();
       data.append("restaurant_id", params.id);
-      data.append("user_name", newReview.user_name);
+    
       data.append("rating", newReview.rating);
       data.append("comment", newReview.comment);
+      data.append("user_token", user.session);
       const res = await axios.post(
         ENDPOINT + "submit-review.php",
         data,
@@ -215,12 +217,14 @@ const Restaurant = () => {
                     alt="#"
                     src={item.image}
                     className="img-fluid item-img w-100"
+                    style={{ height: "160px", objectFit: "cover" }}
                   />
                 </div>
                 <div className="p-3 position-relative">
                   <h6 className="mb-1">{item.name}</h6>
                   <p className="text-gray mb-3">{item.type}</p>
-                  <p className="text-gray m-0">₹{item.price}</p>
+                  <div className="d-flex align-items-center justify-content-between">
+                    <p className="text-gray m-0">₹{item.price}</p>
 
                  
                   <button
@@ -229,6 +233,7 @@ const Restaurant = () => {
                   >
                     ADD
                   </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -298,21 +303,24 @@ const Restaurant = () => {
               {reviews.map((review) => (
                 <div key={review.id} className="reviews-members py-3">
                   <div className="d-flex align-items-start gap-3">
-                    <img
+                    <Avatar
                       alt="#"
-                      src="img/reviewer1.png"
-                      className="rounded-pill"
+                      src={review.profile || "https://via.placeholder.com/50"}
+                     
                     />
                     <div>
                       <div className="reviews-members-header">
-                        <Rating value={review.rating} readOnly size="small" />
-                        <h6 className="mb-0">{review.user_name}</h6>
-                        <p className="text-muted small">
+                        <h5 className="mb-0">{review.username}</h5>
+                        <div className="d-flex align-items-center gap-2 mt-1">
+                          <Rating value={review.rating} readOnly size="small" />
+                        
+                        <p className="text-muted small mb-0">
                           {new Date(review.created_at).toLocaleDateString()}
                         </p>
+                        </div>
                       </div>
-                      <div className="reviews-members-body">
-                        <p>{review.comment}</p>
+                      <div className="reviews-members-body mt-2">
+                        <p >{review.comment}</p>
                       </div>
                     </div>
                   </div>
@@ -336,19 +344,7 @@ const Restaurant = () => {
                     }
                   />
                 </div>
-                <div className="form-group mb-3">
-                  <label className="form-label small">Your Name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                 
-                    value={newReview.user_name}
-                    onChange={(e) =>
-                      setNewReview({ ...newReview, user_name: e.target.value })
-                    }
-                    required
-                  />
-                </div>
+               
                 <div className="form-group mb-3">
                   <label className="form-label small">Your Comment</label>
                   <textarea

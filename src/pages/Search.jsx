@@ -7,6 +7,8 @@ import ENDPOINT from "../components/utilities/ENDPOINT";
 import SecurityHeaders from "../components/utilities/SecurityHeaders";
 import { Skeleton } from "@mui/material";
 import Rating from "@mui/material/Rating";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 const Search = () => {
   const { user } = useContext(UserContext);
@@ -141,7 +143,9 @@ const Search = () => {
               ? { ...r, is_favorite: isFavorite ? 0 : 1 }
               : r
           )
+          
         );
+        getCartItems()
       } else {
         setError("Failed to update favorite: " + res.data.message);
       }
@@ -150,6 +154,33 @@ const Search = () => {
       setError("Failed to update favorite");
     }
   };
+    const [carts, setCarts] = useState([]);
+  
+    const getCartItems = async () => {
+    if (!user || !user.user_id || !user.session) {
+      setCarts([]);
+      return;
+    }
+    const data = new FormData();
+    data.append("user_id", user.user_id);
+    data.append("user_token", user.session);
+    try {
+      const res = await axios.post(
+        ENDPOINT + "get-carts.php",
+        data,
+        SecurityHeaders
+      );
+      if (res.data.status === "success") {
+        setCarts(res.data.data || []);
+      } else {
+        setError(res.data.message || "Failed to fetch cart");
+        setCarts([]);
+      }
+    } catch (error) {
+      setError(error.response?.data?.message || error.message);
+      setCarts([]);
+    }
+  }
 
   useEffect(() => {
     if (security === 'Imposable') {
@@ -167,6 +198,7 @@ const Search = () => {
 
   useEffect(() => {
     return () => {
+      getCartItems()
       debouncedSearch.cancel();
     };
   }, [debouncedSearch]);
@@ -281,12 +313,11 @@ const Search = () => {
                                     )
                                   }
                                 >
-                                  <i
-                                    className={`feather-heart ${restaurant.is_favorite
-                                        ? "text-danger"
-                                        : ""
-                                      }`}
-                                  />
+                                  {carts.find((cart) => cart.restaurant_id === restaurant.restaurant_id) ? (
+                                   <FavoriteIcon className=" text-danger bg-white rounded rounded-circle"/>
+                                  ) : (
+                                     <FavoriteBorderIcon className="text-danger bg-white rounded rounded-circle" />
+                                  )}
                                 </a>
                               </div>
                               {restaurant.is_promoted && (

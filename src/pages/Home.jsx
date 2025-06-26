@@ -212,7 +212,7 @@ const Home = () => {
           {/* Most popular */}
           <div className="most_popular">
             <div className="row over-flow d-flex">
-              <ProductList limit={4} category={"all"} />
+              <ProductList limit={4} category={"all"} type={'most_sales'} />
             </div>
           </div>
         </div>

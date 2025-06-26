@@ -10,7 +10,7 @@ const Footer = ({path}) => {
   const isProfilePage = path === '/profile';
   
   return (
-    <div>
+    <div className='mt-5' >
        <footer className="section-footer border-top bg-dark">
     <div className="container">
       <div className="footer-top padding-y py-5">

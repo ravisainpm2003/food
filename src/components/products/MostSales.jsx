@@ -117,11 +117,11 @@ const MostSales = () => {
                       
                         
                       </div>
-                      {restaurant.is_promoted && (
+                      {restaurant.is_promoted ? (
                         <div className="member-plan position-absolute">
                           <span className="badge text-bg-dark">Promoted</span>
                         </div>
-                      )}
+                      ):<></>}
                       <Link to={`/restaurant/${restaurant.restaurant_id}`}>
                         <img
                           alt={restaurant.name}

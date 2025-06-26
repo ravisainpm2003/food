@@ -7,7 +7,7 @@ import { UserContext } from "../utilities/UserContext";
 import Homeskelton from "../skelton/Homeskelton";
 import { Skeleton } from "@mui/material";
 
-const ProductList = ({ category, limit }) => {
+const ProductList = ({ category, limit , type }) => {
   const [foodItems, setFoodItems] = useState([]);
   const [carts, setCarts] = useState([]);
   const { user, location } = useContext(UserContext);
@@ -21,6 +21,9 @@ const ProductList = ({ category, limit }) => {
     if (limit) {
       data.append("limit", limit);
     }
+ if (type) {
+      data.append("type", type);
+    }
     data.append("location_id", location?.location_id);
 
     try {
@@ -29,7 +32,7 @@ const ProductList = ({ category, limit }) => {
         data,
         SecurityHeaders
       );
-      console.log(res.data);
+      // console.log(res.data);
       if (res.data.status === "success") {
         setFoodItems(res.data.data);
         setLoading(false);
