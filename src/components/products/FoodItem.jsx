@@ -79,7 +79,7 @@ const FoodItem = ({ item, carts, reload }) => {
               alt="#"
               src={item.image}
               className="img-fluid item-img w-100"
-              style={{ height: "200px", objectFit: "cover" }}
+              style={{ height: "201px", objectFit: "cover" }}
             />
           </Link>
         </div>
