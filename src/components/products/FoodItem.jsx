@@ -6,6 +6,8 @@ import axios from "axios";
 import { UserContext } from "../utilities/UserContext";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import Rating from "@mui/material/Rating";
+
 const FoodItem = ({ item, carts, reload }) => {
   const { user } = useContext(UserContext);
 

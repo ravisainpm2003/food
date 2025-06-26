@@ -6,6 +6,7 @@ import { UserContext } from "../components/utilities/UserContext";
 import ENDPOINT from "../components/utilities/ENDPOINT";
 import SecurityHeaders from "../components/utilities/SecurityHeaders";
 import { Skeleton } from "@mui/material";
+import Rating from "@mui/material/Rating";
 
 const Search = () => {
   const { user } = useContext(UserContext);
@@ -17,13 +18,13 @@ const Search = () => {
   const [error, setError] = useState("");
   const [disheskelton, setDisheskelton] = useState([1, 2, 3, 4]);
 
-   const security = localStorage.getItem('security')
+  const security = localStorage.getItem('security')
   // console.log('Security Level:', security);
   let API = '';
 
   const [csrfToken, setCsrfToken] = useState('');
-  const fetchCsrfToken =  () => {
-       axios.get(ENDPOINT + 'get-csrf-token.php', SecurityHeaders)
+  const fetchCsrfToken = () => {
+    axios.get(ENDPOINT + 'get-csrf-token.php', SecurityHeaders)
       .then(res => {
         if (res.data.csrf_token) {
           setCsrfToken(res.data.csrf_token);
@@ -40,32 +41,32 @@ const Search = () => {
   }
 
   useEffect(() => {
- 
+
     if (security === 'Imposable') {
       fetchCsrfToken();
     }
     // Perform initial search with empty query to load all data
   }, [query]);
-   
+
 
   const performSearch = useCallback(
-  async (searchQuery) => {
-    let API = ''; // <-- Move here
-    switch (security) {
-      case 'High':
-        API = 'search-levels/high-search.php';
-        break;
-      case 'Medium':
-        API = 'search-levels/medium-search.php';
-        break;
+    async (searchQuery) => {
+      let API = ''; // <-- Move here
+      switch (security) {
+        case 'High':
+          API = 'search-levels/high-search.php';
+          break;
+        case 'Medium':
+          API = 'search-levels/medium-search.php';
+          break;
         case 'Imposable':
-        API = 'search-levels/impossible-search.php';
-        break;
-      case 'Low':
-      default:
-        API = 'search-levels/low-search.php';
-        break;
-    }
+          API = 'search-levels/impossible-search.php';
+          break;
+        case 'Low':
+        default:
+          API = 'search-levels/low-search.php';
+          break;
+      }
 
       if (!user?.user_id || !user?.session) {
         setError("Please log in to search");
@@ -77,9 +78,9 @@ const Search = () => {
         data.append("query", searchQuery);
         data.append("user_id", user.user_id);
         data.append("user_token", user.session);
-         if(security == 'Imposable') {
-      data.append('csrf_token', csrfToken);
-    }
+        if (security == 'Imposable') {
+          data.append('csrf_token', csrfToken);
+        }
         const res = await axios.post(
           ENDPOINT + API,
           data,
@@ -151,31 +152,18 @@ const Search = () => {
   };
 
   useEffect(() => {
-  if (security === 'Imposable') {
-    if (csrfToken) {
-      setTimeout(() => {
-        performSearch('');
-      }, 1000);
+    if (security === 'Imposable') {
+      if (csrfToken) {
+        setTimeout(() => {
+          performSearch('');
+        }, 1000);
+      }
+    } else {
+      performSearch('');
     }
-  } else {
-    performSearch('');
-  }
-}, [performSearch, security, csrfToken]);
+  }, [performSearch, security, csrfToken]);
 
-  const renderRatingStars = (rating) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      stars.push(
-        <i
-          key={i}
-          className={`feather-star ${
-            i <= Math.floor(rating) ? "star_active" : ""
-          }`}
-        />
-      );
-    }
-    return stars;
-  };
+
 
   useEffect(() => {
     return () => {
@@ -294,11 +282,10 @@ const Search = () => {
                                   }
                                 >
                                   <i
-                                    className={`feather-heart ${
-                                      restaurant.is_favorite
+                                    className={`feather-heart ${restaurant.is_favorite
                                         ? "text-danger"
                                         : ""
-                                    }`}
+                                      }`}
                                   />
                                 </a>
                               </div>
@@ -316,6 +303,7 @@ const Search = () => {
                                   alt={restaurant.name}
                                   src={restaurant.image}
                                   className="img-fluid item-img w-100"
+                                  style={{ height: "201px", objectFit: "cover" }}
                                 />
                               </a>
                             </div>
@@ -334,22 +322,20 @@ const Search = () => {
                                   {restaurant.is_veg ? "• Pure veg" : ""}
                                 </p>
                                 <p className="text-gray mb-1 rating"></p>
-                                <ul className="rating-stars list-unstyled">
-                                  <li>
-                                    {renderRatingStars(restaurant.rating)}
-                                  </li>
-                                </ul>
+                               
                               </div>
-                              <div className="list-card-badge">
+                             <div className="d-flex justify-content-between align-items-center">
+                               <div className="list-card-badge">
                                 <span
-                                  className={`badge text-bg-${
-                                    restaurant.offer ? "danger" : "success"
-                                  }`}
+                                  className={`badge text-bg-${restaurant.offer ? "danger" : "success"
+                                    }`}
                                 >
                                   OFFER
                                 </span>{" "}
                                 <small>{restaurant.offer || "65% off"}</small>
                               </div>
+                          
+                             </div>
                             </div>
                           </div>
                         </div>
