@@ -4,189 +4,165 @@ import FoodItem from "../components/products/FoodItem";
 import ProductList from "../components/products/ProductList";
 import MostPopular from "./MostPopular";
 import MostSales from "../components/products/MostSales";
-
+import Carousel from "react-bootstrap/Carousel";
+import carousel1 from "../assests/carousel/carousel2.webp";
+import carousel2 from "../assests/carousel/carousel3.webp";
+import chicken from "../pages/food-items/Authentic Mughlai Chicken Biryani Recipe – Dum….jpeg";
+import pasta from "../pages/food-items/vegtable-pasta.jpeg";
+import chilsoup from "../pages/food-items/chill-soup.jpeg";
+import pizza from "../pages/food-items/pizza.jpeg";
+import gualab from "../pages/food-items/gulab-jamun.jpeg";
+import burger from "../pages/food-items/Cheese-burger.jpeg";
+import coffee from "../pages/food-items/Coffee is a brewed beverage made from roasted….jpeg";
 const Home = () => {
   const ravi = "Ravi Kumar";
   const alertMessage = `Hello ${ravi}, welcome to our restaurant!`;
   return (
     <>
       <div className="osahan-home-page">
-        <div className="restaurant-hero">
+        {/* <div className="restaurant-hero">
           <h2 className="restaurant-title">
             The restaurants serves tasty dishes with fresh ingredients
           </h2>
-        </div>
+        </div> */}
         {/* Filters */}
-        <div className="container mt-2">
-          <div className="cat-slider d-flex">
-            <div className="cat-item px-1 py-3">
-              <Link
-                className="bg-white rounded d-block p-2 text-center shadow-sm"
-                to="/menu/fries"
-              >
-                <img
-                  alt="#"
-                  src="img/icons/Fries.png"
-                  className="img-fluid mb-2"
-                />
-                <p className="m-0 small">Fries</p>
-              </Link>
-            </div>
-            <div className="cat-item px-1 py-3">
-              <Link
-                className="bg-white rounded d-block p-2 text-center shadow-sm"
-                to="/menu/pizza"
-              >
-                <img
-                  alt="#"
-                  src="img/icons/Pizza.png"
-                  className="img-fluid mb-2"
-                />
-                <p className="m-0 small">Pizza</p>
-              </Link>
-            </div>
-            <div className="cat-item px-1 py-3">
-              <Link
-                className="bg-white rounded d-block p-2 text-center shadow-sm"
-                to="/menu/burger"
-              >
-                <img
-                  alt="#"
-                  src="img/icons/Burger.png"
-                  className="img-fluid mb-2"
-                />
-                <p className="m-0 small">Burger</p>
-              </Link>
-            </div>
-            <div className="cat-item px-1 py-3">
-              <Link
-                className="bg-white rounded d-block p-2 text-center shadow-sm"
-                to="/menu/sandwich"
-              >
-                <img
-                  alt="#"
-                  src="img/icons/Sandwich.png"
-                  className="img-fluid mb-2"
-                />
-                <p className="m-0 small">Sandwich</p>
-              </Link>
-            </div>
-            <div className="cat-item px-1 py-3">
-              <Link
-                className="bg-white rounded d-block p-2 text-center shadow-sm"
-                to="/menu/coffee"
-              >
-                <img
-                  alt="#"
-                  src="img/icons/Coffee.png"
-                  className="img-fluid mb-2"
-                />
-                <p className="m-0 small">Coffee</p>
-              </Link>
-            </div>
-            <div className="cat-item px-1 py-3">
-              <Link
-                className="bg-white rounded d-block p-2 text-center shadow-sm"
-                to="/menu/steak"
-              >
-                <img
-                  alt="#"
-                  src="img/icons/Steak.png"
-                  className="img-fluid mb-2"
-                />
-                <p className="m-0 small">Steak</p>
-              </Link>
-            </div>
-            <div className="cat-item px-1 py-3">
-              <Link
-                className="bg-white rounded d-block p-2 text-center shadow-sm"
-                to="/menu/cola"
-              >
-                <img
-                  alt="#"
-                  src="img/icons/ColaCan.png"
-                  className="img-fluid mb-2"
-                />
-                <p className="m-0 small">ColaCan</p>
-              </Link>
-            </div>
-            <div className="cat-item px-1 py-3">
-              <Link
-                className="bg-white rounded d-block p-2 text-center shadow-sm"
-                to="menu"
-              >
-                <img
-                  alt="#"
-                  src="img/icons/Breakfast.png"
-                  className="img-fluid mb-2"
-                />
-                <p className="m-0 small">Breakfast</p>
-              </Link>
-            </div>
-            <div className="cat-item px-1 py-3">
-              <Link
-                className="bg-white rounded d-block p-2 text-center shadow-sm"
-                to="/menu/salad"
-              >
-                <img
-                  alt="#"
-                  src="img/icons/Salad.png"
-                  className="img-fluid mb-2"
-                />
-                <p className="m-0 small">Salad</p>
-              </Link>
-            </div>
-          </div>
-        </div>
+
         {/* offer sectio slider */}
-        <div className="bg-white">
-          <div className="container">
-            <div className="offer-slider d-flex">
-              <div className="cat-item px-1 py-3">
-                <Link className="d-block text-center shadow-sm" to="trending">
-                  <img
-                    alt="#"
-                    src="img/pro1.jpg"
-                    className="img-fluid rounded"
-                  />
-                </Link>
+
+        <div
+          style={{ height: 250, objectFit: "cover" }}
+          className="mx-5 rounded-3 border-4 mt-3"
+        >
+          <Carousel className="rounded-4 overflow-hidden">
+            <Carousel.Item interval={2000}>
+              <img
+                style={{ height: 250, objectFit: "cover" }}
+                src={carousel1}
+                alt=""
+                className="d-block w-100 rounded-3"
+              />
+            </Carousel.Item>
+            <Carousel.Item interval={2000}>
+              <img
+                style={{ height: 250, objectFit: "cover" }}
+                src={carousel2}
+                alt=""
+                className="d-block w-100 rounded-3"
+              />
+            </Carousel.Item>
+            <Carousel.Item interval={2000}>
+              <img
+                style={{ height: 250, objectFit: "cover" }}
+                src={carousel1}
+                alt=""
+                className="d-block w-100 rounded-3"
+              />
+            </Carousel.Item>
+          </Carousel>
+        </div>
+        <div className="container mt-4 d-flex justify-content-center">
+          <div className="cat-slider d-flex justify-content-between col-10">
+            <div>
+              <div
+                className="rounded-circle overflow-hidden d-flex align-items-center justify-content-center"
+                style={{ width: 130, height: 130 }}
+              >
+                <img
+                  src={chicken}
+                  alt=""
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
               </div>
-              <div className="cat-item px-1 py-3">
-                <Link className="d-block text-center shadow-sm" to="trending">
-                  <img
-                    alt="#"
-                    src="img/pro2.jpg"
-                    className="img-fluid rounded"
-                  />
-                </Link>
+              <h5 className="text-center mt-2">Chicken Biryani</h5>
+            </div>
+            <div>
+              <div
+                className="rounded-circle overflow-hidden d-flex align-items-center justify-content-center"
+                style={{ width: 130, height: 130 }}
+              >
+                <img
+                  src={pasta}
+                  alt=""
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
               </div>
-              <div className="cat-item px-1 py-3">
-                <Link className="d-block text-center shadow-sm" to="trending">
-                  <img
-                    alt="#"
-                    src="img/pro3.jpg"
-                    className="img-fluid rounded"
-                  />
-                </Link>
+              <h5 className="text-center mt-2">Pasta</h5>
+            </div>
+            <div>
+              <div
+                className="rounded-circle overflow-hidden d-flex align-items-center justify-content-center"
+                style={{ width: 130, height: 130 }}
+              >
+                <img
+                  src={gualab}
+                  alt=""
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
               </div>
-              <div className="cat-item px-1 py-3">
-                <Link className="d-block text-center shadow-sm" to="trending">
-                  <img
-                    alt="#"
-                    src="img/pro4.jpg"
-                    className="img-fluid rounded"
-                  />
-                </Link>
+              <h5 className="text-center mt-2">Sweets</h5>
+            </div>
+            <div>
+              <div
+                className="rounded-circle overflow-hidden d-flex align-items-center justify-content-center"
+                style={{ width: 130, height: 130 }}
+              >
+                <img
+                  src={pizza}
+                  alt=""
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
               </div>
-              <div className="cat-item px-1 py-3">
-                <Link className="d-block text-center shadow-sm" to="trending">
-                  <img
-                    alt="#"
-                    src="img/pro2.jpg"
-                    className="img-fluid rounded"
-                  />
-                </Link>
+              <h5 className="text-center mt-2">Pizza</h5>
+            </div>
+            <div>
+              <div
+                className="rounded-circle overflow-hidden d-flex align-items-center justify-content-center"
+                style={{ width: 130, height: 130 }}
+              >
+                <img
+                  src={burger}
+                  alt=""
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
               </div>
+              <h5 className="text-center mt-2"> Burger</h5>
+            </div>
+            <div>
+              <div
+                className="rounded-circle overflow-hidden d-flex align-items-center justify-content-center"
+                style={{ width: 130, height: 130 }}
+              >
+                <img
+                  src={coffee}
+                  alt=""
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              </div>
+              <h5 className="text-center mt-2">Coffee</h5>
             </div>
           </div>
         </div>
@@ -212,7 +188,7 @@ const Home = () => {
           {/* Most popular */}
           <div className="most_popular">
             <div className="row over-flow d-flex">
-              <ProductList limit={4} category={"all"} type={'most_sales'} />
+              <ProductList limit={4} category={"all"} type={"most_sales"} />
             </div>
           </div>
         </div>
