@@ -234,18 +234,10 @@ const Profile = () => {
                 className="p-3 border rounded bg-white btn d-flex align-items-center"
               >
                 Change Password
-                <ArrowRight className="ms-auto" />
+                <ArrowRight className="ms-auto text-primary" />
               </Link>
             </div>
-            <div className="deactivate_account">
-              <Link
-                to="/deactivate-account"
-                className="p-3 border rounded bg-white btn d-flex align-items-center"
-              >
-                Deactivate Account
-                <ArrowRight className="ms-auto" />
-              </Link>
-            </div>
+           
           </div>
         </div>
       </div>

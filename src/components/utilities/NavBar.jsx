@@ -2,9 +2,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from './UserContext';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import axios from 'axios';
 import ENDPOINT from './ENDPOINT';
 import SecurityHeaders from './SecurityHeaders';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const NavBar = () => {
   const { user, location, setLocation,security,setSecurity } = useContext(UserContext);
@@ -239,11 +241,11 @@ const NavBar = () => {
                     </div>
                     <Link to="/checkout" className="widget-header me-4 text-dark">
                       <div className="icon d-flex align-items-center">
-                        <i className="feather-shopping-cart h6 me-2 mb-0" /> <span>Cart</span>
+                        <ShoppingCartIcon className='text-primary' /> 
                       </div>
                     </Link>
                     <Link to="/favorites" className="widget-header text-dark position-relative">
-                      <FavoriteBorderIcon className="text-secondary" />
+                      <FavoriteIcon className="text-primary" />
                       {favoritesCount > 0 && (
                         <span className="badge bg-danger text-white position-absolute top-0 start-100 translate-middle rounded-circle">
                           {favoritesCount}
