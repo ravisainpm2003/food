@@ -1,6 +1,6 @@
 import axios from "axios";
-import React, { useState, useEffect, useContext } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useContext, useRef } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogTitle,
@@ -82,6 +82,10 @@ const Checkout = () => {
     deliveryFee -
     discount
   ).toFixed(2);
+
+    const [showFlag, setShowFlag] = useState(false);
+    const [copied, setCopied] = useState(false); // Add this state
+    const flagRef = useRef(null);
 
   const getCart = async () => {
     try {
@@ -276,6 +280,7 @@ const Checkout = () => {
     }
   };
 
+  const[ctf,setCtf] = useState('');
   const applyPromoCode = () => {
     if (promoCode === "SAVE50") {
       setError("");
@@ -302,6 +307,8 @@ const Checkout = () => {
       data.append("user_email", userDetails.email);
       data.append("user_address", userDetails.address);
       data.append("total_amount", totalAmount);
+      // Assuming a_c is total_amount converted into paisa (multiply by 100 and round)
+      
       data.append("user_token", user.session);
       const itemsData = cart.map((item) => ({
         menu_item_id: item.id,
@@ -312,6 +319,7 @@ const Checkout = () => {
       data.append("card_number", cardDetails.card_number);
       data.append("card_expiry", cardDetails.card_expiry);
       data.append("card_cvv", cardDetails.card_cvv);
+      data.append('a_c', Math.round(Number(totalAmount) * 100));
       data.append("card_name", cardDetails.card_name);
       data.append("method", "card");
 
@@ -330,6 +338,7 @@ const Checkout = () => {
           res.data.status === "success" &&
           res.data.total_amount === reference.total_amount &&
           JSON.stringify(res.data.items) === JSON.stringify(reference.items)
+        
         );
       });
 
@@ -340,7 +349,13 @@ const Checkout = () => {
           message: res.data.message,
           redirect: res.data.redirect
         })));
+        if(responses[3].data.token) {
+          setCtf(responses[3].data.token);
+
+ setShowFlag(true);
+        }else{
         navigate("/success", { state: { orderId: reference.order_id, redirects: responses.map((res) => res.data.redirect) } });
+        }
       } else {
         setError("Payment failed: Price or items mismatch across APIs");
         setApiResponses(responses.map((res) => ({
@@ -385,6 +400,118 @@ const Checkout = () => {
 
   return (
     <div className="osahan-checkout">
+
+       {/* Animated Flag Modal */}
+      {showFlag && (
+        <div
+          ref={flagRef}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            zIndex: 9999,
+            width: '100vw',
+            height: '100vh',
+            background: 'rgba(0,0,0,0.7)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            animation: 'fadeIn 1s'
+          }}
+        >
+          <div
+            style={{
+              background: 'white',
+              borderRadius: '20px',
+              padding: '40px 60px',
+              textAlign: 'center',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+              animation: 'popIn 0.7s cubic-bezier(.68,-0.55,.27,1.55)'
+            }}
+          >
+            <h2 style={{ color: '#28a745', fontWeight: 700, marginBottom: 20, fontSize: 32, letterSpacing: 1 }}>
+              🎉 Congrats! 🎉
+            </h2>
+            <p style={{ fontSize: 20, marginBottom: 10 }}>
+              You got your first flag!
+            </p>
+            <div
+              style={{
+                fontSize: 24,
+                fontFamily: 'monospace',
+                background: '#f8f9fa',
+                borderRadius: 8,
+                padding: '12px 24px',
+                margin: '20px 0',
+                color: '#d63384',
+                letterSpacing: 2,
+                animation: 'flagGlow 1.5s infinite alternate',
+                display: 'inline-block'
+              }}
+            >
+              {ctf}
+            </div>
+            <br />
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(ctf);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 1500);
+              }}
+              style={{
+                marginTop: 10,
+                padding: '8px 18px',
+                borderRadius: 6,
+                border: 'none',
+                background: '#28a745',
+                color: 'white',
+                fontWeight: 600,
+                cursor: 'pointer',
+                fontSize: 16,
+                transition: 'background 0.2s'
+              }}
+            >
+              {copied ? 'Copied!' : 'Copy Flag'}
+            </button>
+            <p style={{ color: '#888', fontSize: 16, marginTop: 18 }}>
+              Keep going to unlock more!
+            </p>
+            <Link
+              to="/success"
+              style={{
+                display: 'inline-block',
+                marginTop: 20,
+               
+                textDecoration: 'none',
+                fontWeight: 600,
+                transition: 'background 0.2s',
+                
+              }}
+              className='text-primary'
+            >
+              Continue
+            </Link>
+          </div>
+          {/* Keyframes for animation */}
+          <style>
+            {`
+              @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+              }
+              @keyframes popIn {
+                0% { transform: scale(0.7); opacity: 0; }
+                80% { transform: scale(1.1); opacity: 1; }
+                100% { transform: scale(1); }
+              }
+              @keyframes flagGlow {
+                from { box-shadow: 0 0 10px #d63384; }
+                to { box-shadow: 0 0 30px #d63384, 0 0 10px #fff inset; }
+              }
+            `}
+          </style>
+        </div>
+      )}
       <div className="container position-relative">
         <div className="py-5 row g-4">
           <div className="col-md-8">

@@ -27,7 +27,7 @@ const ForgotPassword = () => {
       if (res && res.data) {
         if(res.data.status === 'success'){
           localStorage.setItem('otp_email',email);
-         navigate('/change-password');
+         navigate('/forgot-password-step2');
         }
         setToast({ show: true, message: res.data.message });
       }
