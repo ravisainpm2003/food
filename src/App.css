@@ -37,11 +37,11 @@
  
 }
 .over-flow > * {
-  min-width: 150px; /* Adjust as needed */
+  min-width: 40px; /* Adjust as needed */
 }
 /* For Chrome, Edge, and Safari */
 .over-flow::-webkit-scrollbar {
-  height: 6px; /* Reduce scrollbar height */
+  height: 10px !important; /* Reduce scrollbar height */
 }
 
 .over-flow::-webkit-scrollbar-thumb {
@@ -94,4 +94,21 @@ font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     opacity: 1;
     transform: scale(1);
   }
+}
+.most_popular .row.over-flow {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto; /* Enables horizontal scrolling */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+  scrollbar-width: thin; /* Firefox: slim scrollbar */
+}
+
+.most_popular .row.over-flow::-webkit-scrollbar {
+  height: 8px; /* Chrome/Safari: slim scrollbar */
+}
+
+/* Ensure ProductList items don’t shrink too much */
+.most_popular .row.over-flow > * {
+  flex: 0 0 auto; /* Prevent items from shrinking */
+  min-width: 150px; /* Example: adjust based on your design */
 }

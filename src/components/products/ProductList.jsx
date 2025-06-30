@@ -6,8 +6,9 @@ import axios from "axios";
 import { UserContext } from "../utilities/UserContext";
 import Homeskelton from "../skelton/Homeskelton";
 import { Skeleton } from "@mui/material";
+import { motion } from "framer-motion";
 
-const ProductList = ({ category, limit , type }) => {
+const ProductList = ({ category, limit, type }) => {
   const [foodItems, setFoodItems] = useState([]);
   const [carts, setCarts] = useState([]);
   const { user, location } = useContext(UserContext);
@@ -21,7 +22,7 @@ const ProductList = ({ category, limit , type }) => {
     if (limit) {
       data.append("limit", limit);
     }
- if (type) {
+    if (type) {
       data.append("type", type);
     }
     data.append("location_id", location?.location_id);
@@ -77,7 +78,7 @@ const ProductList = ({ category, limit , type }) => {
   const skelton = [1, 2, 3, 4, 5, 6, 7, 8];
   return (
     <>
-      <div className="trending-slider d-flex col-12 px-0 ">
+      <div className=" flex-wrap d-flex col-12 px-0 ">
         {loading ? (
           skelton.map(() => (
             <div className="col-6 col-md-4 col-lg-3 px-1" key={Math.random()}>
@@ -92,9 +93,21 @@ const ProductList = ({ category, limit , type }) => {
           <>
             {foodItems ? (
               foodItems.map((item, index) => (
-                <div className="col-6 col-md-4 col-lg-3 px-1 " key={index}>
+                <motion.div
+                  initial={{ opacity: 0, y: -50, scale: 0.8, rotate: -5 }} // y: -50 for top-to-bottom
+                  whileInView={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 80,
+                    damping: 20,
+                    delay: index * 0.02,
+                  }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  className="col-6 col-md-4 col-lg-3 px-1  "
+                  key={index}
+                >
                   <FoodItem item={item} carts={carts} reload={getCartItems} />
-                </div>
+                </motion.div>
               ))
             ) : (
               <div className="col-12 text-center">No Products Found</div>
