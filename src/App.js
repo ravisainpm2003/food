@@ -34,6 +34,7 @@ import Skelton from "./components/skelton/Skelton";
 import Homeskelton from "./components/skelton/Homeskelton";
 import Resturantskel from "./components/skelton/Resturantskel";
 import Searchskel from "./components/skelton/Searchskel";
+import ForgotPassword2 from "./pages/ForgotPassword2";
 
 const App = () => {
   return (
@@ -43,6 +44,7 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+         <Route path="/forgot-password-step2" element={<ForgotPassword2 />} />
         <Route path="/change-password" element={<ChangePassword />} />
 
         {/* Routes with AppTheme */}
