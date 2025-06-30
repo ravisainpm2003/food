@@ -20,6 +20,9 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  List,
+  ListItem,
+  ListItemText,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
@@ -64,6 +67,7 @@ const Checkout = () => {
     country: "",
     is_default: false,
   });
+  const [apiResponses, setApiResponses] = useState([]); // Store API responses
 
   const itemTotal = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -295,46 +299,60 @@ const Checkout = () => {
       const data = new FormData();
       data.append("restaurant_id", restaurant.id || 1);
       data.append("user_name", userDetails.name);
-      data.append("user_phone", userDetails.email);
+      data.append("user_email", userDetails.email);
       data.append("user_address", userDetails.address);
       data.append("total_amount", totalAmount);
       data.append("user_token", user.session);
-      data.append(
-        "items",
-        JSON.stringify(
-          cart.map((item) => ({
-            menu_item_id: item.id,
-            quantity: item.quantity,
-            price: item.price,
-          }))
-        )
-      );
+      const itemsData = cart.map((item) => ({
+        menu_item_id: item.id,
+        quantity: item.quantity,
+        price: item.price,
+      }));
+      data.append("items", JSON.stringify(itemsData));
       data.append("card_number", cardDetails.card_number);
       data.append("card_expiry", cardDetails.card_expiry);
       data.append("card_cvv", cardDetails.card_cvv);
       data.append("card_name", cardDetails.card_name);
       data.append("method", "card");
 
-      const res = await axios.post(
-        ENDPOINT + "order.php",
-        data,
-        SecurityHeaders
-      );
-      if (res.data.status === "success") {
-        const clearData = new FormData();
-        clearData.append("user_token", user.session);
-        await axios.post(
-          ENDPOINT + "clear-cart.php",
-          clearData,
-          SecurityHeaders
+      // Call all four APIs sequentially
+      const responses = [];
+      const apis = ["order_low.php", "payment_low.php", "notify_low.php", "receipt_low.php"];
+      for (const api of apis) {
+        const res = await axios.post(ENDPOINT + api, data, SecurityHeaders);
+        responses.push({ api, data: res.data });
+      }
+
+      // Verify price and items across all APIs
+      const reference = responses[0].data;
+      const isValid = responses.every((res) => {
+        return (
+          res.data.status === "success" &&
+          res.data.total_amount === reference.total_amount &&
+          JSON.stringify(res.data.items) === JSON.stringify(reference.items)
         );
-        navigate("/success", { state: { orderId: res.data.order_id } });
+      });
+
+      if (isValid) {
+        setApiResponses(responses.map((res) => ({
+          api: res.api,
+          status: res.data.status,
+          message: res.data.message,
+          redirect: res.data.redirect
+        })));
+        navigate("/success", { state: { orderId: reference.order_id, redirects: responses.map((res) => res.data.redirect) } });
       } else {
-        setError("Failed to place order: " + res.data.message);
+        setError("Payment failed: Price or items mismatch across APIs");
+        setApiResponses(responses.map((res) => ({
+          api: res.api,
+          status: res.data.status,
+          message: res.data.message,
+          redirect: res.data.redirect
+        })));
       }
     } catch (err) {
       console.log("Place Order Error: " + err);
-      setError("An error occurred while placing the order");
+      setError("An error occurred while processing the order");
     }
   };
 
@@ -354,6 +372,16 @@ const Checkout = () => {
     getCart();
     getAddresses();
   }, []);
+
+  const handleCardExpiryChange = (e) => {
+    let value = e.target.value.replace(/[^\d]/g, "");
+    if (value.length > 4) value = value.slice(0, 4);
+    if (value.length > 2) value = value.slice(0, 2) + "/" + value.slice(2);
+    setCardDetails({
+      ...cardDetails,
+      card_expiry: value,
+    });
+  };
 
   return (
     <div className="osahan-checkout">
@@ -487,8 +515,8 @@ const Checkout = () => {
                 required
               />
               <TextField
-                label="Phone Number"
-                type="number"
+                label="Email"
+                type="email"
                 fullWidth
                 margin="normal"
                 value={userDetails.email}
@@ -515,10 +543,14 @@ const Checkout = () => {
                   </Typography>
                   <Box component="form">
                     <TextField
-                      label="Card number"
-                      type="text"
+                      label="Card Number"
                       fullWidth
                       margin="normal"
+                      inputProps={{
+                        inputMode: "numeric",
+                        pattern: "[0-9]*",
+                        maxLength: 6,
+                      }}
                       value={cardDetails.card_number}
                       onChange={(e) =>
                         setCardDetails({
@@ -533,22 +565,26 @@ const Checkout = () => {
                         label="Valid through (MM/YY)"
                         type="text"
                         fullWidth
+                        inputProps={{
+                          inputMode: "numeric",
+                          pattern: "[0-9/]*",
+                          maxLength: 5,
+                        }}
                         margin="normal"
                         sx={{ flex: 2 }}
                         value={cardDetails.card_expiry}
-                        onChange={(e) =>
-                          setCardDetails({
-                            ...cardDetails,
-                            card_expiry: e.target.value,
-                          })
-                        }
+                        onChange={handleCardExpiryChange}
                         required
                       />
                       <TextField
                         label="CVV"
-                        type="text"
                         fullWidth
                         margin="normal"
+                        inputProps={{
+                          inputMode: "numeric",
+                          pattern: "[0-9]*",
+                          maxLength: 3,
+                        }}
                         sx={{ flex: 1 }}
                         value={cardDetails.card_cvv}
                         onChange={(e) =>
@@ -749,6 +785,36 @@ const Checkout = () => {
                   />
                 </Button>
               </Box>
+              {apiResponses.length > 0 && (
+                <Box p={3} bgcolor="white">
+                  <Typography variant="h6" mb={2}>
+                    API Responses
+                  </Typography>
+                  <List>
+                    {apiResponses.map((res, index) => (
+                      <ListItem key={index}>
+                        <ListItemText
+                          primary={`${res.api}: ${res.status} - ${res.message}`}
+                          secondary={
+                            <a
+                              href={res.redirect}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{ color: "#1976d2", textDecoration: "none" }}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                window.open(res.redirect, "_blank");
+                              }}
+                            >
+                              {res.redirect}
+                            </a>
+                          }
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                </Box>
+              )}
             </div>
           </div>
         </div>
